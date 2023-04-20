@@ -8,10 +8,14 @@ export const customWebLoader = async (url: string) => {
     const newDocs: Document[] = []
     for(let item of oriDocs){
         newDocs.push(new Document({
-            pageContent: item.pageContent.replace(/(<[^>]*>?)/g, ''),
+            pageContent: replaceText(item.pageContent),
             metadata: item.metadata
         }))
     }
-    
+
     return newDocs
 }
+
+const replaceText = (text:string) :string =>
+    text.replace(/<script .*?><\/script>/g, '')
+        .replace(/(<[^>]*>?)|\t|\n|(\s{2,})|\&nbsp\;/g, '')
